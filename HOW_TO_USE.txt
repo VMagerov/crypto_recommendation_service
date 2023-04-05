@@ -1,0 +1,51 @@
+How to run:
+1) build jar by using Maven command: mvn clean package
+2) build Docker image by using command: docker build -t crypto .
+3) run Docker image by using command: docker run -d -p 8080:8080 --name crypto_app crypto
+
+How to use:
+Application has 3 endpoints to get data
+1) to get a descending sorted list of all the cryptos, comparing the normalized range (i.e. (max-min)/min), use getByNormalizedDescending
+    Request example: GET localhost:8080/getByNormalizedDescending
+    Response example:
+[
+    {
+        "name": "ETH",
+        "normalizedValue": 0.6383810110763016
+    },
+    {
+        "name": "XRP",
+        "normalizedValue": 0.5060541310541311
+    },
+    {
+        "name": "DOGE",
+        "normalizedValue": 0.5046511627906975
+    },
+    {
+        "name": "LTC",
+        "normalizedValue": 0.4651837524177949
+    },
+    {
+        "name": "BTC",
+        "normalizedValue": 0.43412110435594536
+    }
+]
+
+2) to get the oldest/newest/min/max values for a requested crypto, use getCurrencyStatistics
+    Request example: localhost:8080/getCurrencyStatistics?currencyName=BTC
+    Response example:
+    {
+        "name": "BTC",
+        "oldest": 46813.21,
+        "newest": 38415.79,
+        "min": 33276.59,
+        "max": 47722.66
+    }
+
+3) to get crypto with the highest normalized range for a specific day (or any date range), use getHighestNormalizedByRange with required date range
+    Request example: GET localhost:8080/getHighestNormalizedByRange?start=01/22/2022&end=01/22/2022
+    Response example:
+    {
+        "name": "DOGE",
+        "normalizedValue": 0.11085271317829462
+    }
